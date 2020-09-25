@@ -29,6 +29,8 @@ docker run --rm --name Terraform \
 
 #### Build
 ```
+docker build -t izone/terraform .
+```
+```
 docker build -t izone/terraform:proxmox .
 ```
-
