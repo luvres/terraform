@@ -17,6 +17,11 @@ docker run --rm --name Terraform \
 ```
 docker run --rm --name Terraform \
 -v $PWD:/app -w /app \
+-ti izone/terraform:proxmox init
+```
+```
+docker run --rm --name Terraform \
+-v $PWD:/app -w /app \
 -ti izone/terraform:proxmox plan
 ```
 ```
@@ -24,7 +29,11 @@ docker run --rm --name Terraform \
 -v $PWD:/app -w /app \
 -ti izone/terraform:proxmox apply
 ```
-
+```
+docker run --rm --name Terraform \
+-v $PWD:/app -w /app \
+-ti izone/terraform:proxmox destroy
+```
 -----
 
 #### Build
