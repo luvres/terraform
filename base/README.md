@@ -1,11 +1,11 @@
-# Init
+## Init
 docker run --rm \
 -v $PWD:/app -w /app \
 -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa \
 -v $HOME/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub \
 -ti izone/terraform:proxmox init
 
-# Plan
+## Plan
 docker run --rm \
 -v $PWD:/app -w /app \
 -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa \
@@ -13,7 +13,7 @@ docker run --rm \
 -ti izone/terraform:proxmox plan
 
 
-# Apply
+## Apply
 docker run --rm \
 -v $PWD:/app -w /app \
 -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa \
@@ -27,7 +27,7 @@ docker run --rm \
 -ti izone/terraform:proxmox apply -var 'vm_count=1'
 
 
-# Destroy
+## Destroy
 docker run --rm \
 -v $PWD:/app -w /app \
 -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa \

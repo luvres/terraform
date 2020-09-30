@@ -9,16 +9,16 @@ docker run --rm \
 source $HOME/.zshrc
 
 
-# Init first
+### Init first
 t init
 
-# Plan
+### Plan
 t plan
 
-# Destroy
+### Destroy
 t destroy
 
-# Apply
+### Apply
 t apply \
 -var 'subnet=169.8.192' \
 -var 'ip_start=101' \
@@ -26,25 +26,23 @@ t apply \
 -var 'gateway=169.8.192.126' \
 -var 'vm_count_master=1' -var 'vm_count_worker=3'
 
-# -----------
-# -----------
 
-# Init
+### Init
 docker run --rm \
 -v $PWD:/app -w /app \
 -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa \
 -v $HOME/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub \
 -ti izone/terraform:proxmox init
 
-# Plan
+### Plan
 docker run --rm \
 -v $PWD:/app -w /app \
 -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa \
 -v $HOME/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub \
 -ti izone/terraform:proxmox plan
 
-
-# Apply
+-----
+### Apply
 docker run --rm \
 -v $PWD:/app -w /app \
 -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa \
@@ -58,7 +56,7 @@ docker run --rm \
 -ti izone/terraform:proxmox apply -var 'vm_count=1'
 
 
-# Destroy
+### Destroy
 docker run --rm \
 -v $PWD:/app -w /app \
 -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa \
