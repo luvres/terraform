@@ -1,0 +1,154 @@
+#cloud-config
+
+package_update: true
+package_upgrade: true
+
+# APT fails to acquire GPG keys if package dirmngr is missing
+bootcmd:
+  - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
+  - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, dirmngr, -y ]
+  - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, gnupg2, -y ]
+
+apt:
+  sources:
+    kubernetes.list:
+      source: "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+      keyid: 54A647F9048D5688D7DA2ABE6A030B21BA07F4FB
+
+packages:
+  - qemu-guest-agent
+  - htop
+  - curl
+  - apt-transport-https
+  - kubelet
+  - kubeadm
+  - kubectl
+  
+users:
+  - name: debian
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    home: /home/debian
+    shell: /bin/bash
+    lock_passwd: false
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCb+D+grg2xiqWf3s6ssPTVB86hj0TwOdEhJYVdDi7aCrD4/DVeRgtmreiXBf/7mAuLhN0bRbYc+pupi7kznb0xtEStj9/ZkOsBVggJq0QXDjhjgfV0nv4aiIfSs0uj9Q7W3SoQO2QX7K6iL3V01Wm/6tzGn0ikE95DPsk166w3Gqs72Jv9erVkJL5LYclyXTIjEwajig+H+tfSV8GT2bYbwWdbYNkaiAsPL8B2d/dKT4E7dxrAuaCSTKdFfR75k0a/x/wl9aPmZVH4YoMO6WuMifLpaceErwL+vI5JhQ2BzHvU07zVC5l+jggzVjt5yGuvpEiaZ05VrotZGW2B5sPB
+      
+ssh_keys:
+  rsa_private: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn
+    NhAAAAAwEAAQAAAQEAm/g/oK4NsYqln97OrLD01QfOoY9E8DnRISWFXQ4u2gqw+Pw1XkYL
+    Zq3olwX/+5gLi4TdG0W2HPqbqYu5M529MbRErY/f2ZDrAVYICatEFw44Y4H1dJ7+GoiH0r
+    NLo/UO1t0qEDtkF+yuoi91dNVpv+rcxp9IpBPeQz7JNeusNxqrO9ib/Xq1ZCS+S2HJcl0y
+    IxMGo4oPh/rX0lfBk9m2G8FnW2DZGogLDy/Adnf3Sk+BO3cawLmgkkynRX0e+ZNGv8f8Jf
+    Wj5mVR+GKDDulrjIny6WnHhK8C/ryOSYUNgcx71NO81QuZfo4IM1Y7echrr6RImmdOVa6L
+    WRltgebDwQAAA8jlGYze5RmM3gAAAAdzc2gtcnNhAAABAQCb+D+grg2xiqWf3s6ssPTVB8
+    6hj0TwOdEhJYVdDi7aCrD4/DVeRgtmreiXBf/7mAuLhN0bRbYc+pupi7kznb0xtEStj9/Z
+    kOsBVggJq0QXDjhjgfV0nv4aiIfSs0uj9Q7W3SoQO2QX7K6iL3V01Wm/6tzGn0ikE95DPs
+    k166w3Gqs72Jv9erVkJL5LYclyXTIjEwajig+H+tfSV8GT2bYbwWdbYNkaiAsPL8B2d/dK
+    T4E7dxrAuaCSTKdFfR75k0a/x/wl9aPmZVH4YoMO6WuMifLpaceErwL+vI5JhQ2BzHvU07
+    zVC5l+jggzVjt5yGuvpEiaZ05VrotZGW2B5sPBAAAAAwEAAQAAAQEAhCUSk6qkQ3Y62XbH
+    GJ1c8lkJAu0F9ZqmyzSlB7CKlYZVZr8Y4GTsJ/TUiZA10A6ESZMqWn73yxmxZTbSlR7iOw
+    iG3550hDs6QQmJCdgnenk74WMsecBzfjuLCEOMpL9t8TG0/8eyCGspkpQvKevfCxGMOGSg
+    ARQsTkEV7S9d29jT09eXSOYlwBNzjjQ885mYxTXQYawC3JLQcn8OLWJ7iGSZTuuhnDt5Vo
+    csqvAju9QsDLex7GzakMdGgj/A3gHvfxreASyX1H5oEWbzd/ZxIPi6/yEW4q3JibsGuvlw
+    VJq/HrAMwyE+wmoekn9cwHiJJ6f+rCZTdCGFXk1AYiYKeQAAAIAdbckj96DvQgVEBcIMN2
+    DQk+GQtZMHBl8tFzCW26XavsryujcKJw3a2ZlO/WWUCYc6q+mD+DvTV4im5Ba8/KSfGsQf
+    g5Rqd8o8Uj1/Xx8ADxHFbHJn43G04npbLskhtBu6ef9DGPGplfxHLPaYz2JhiaLl6I8N23
+    qUYKKwoW5lrQAAAIEAziY7Wj0KHTcO6FpaIEx0uQZAZlZGznTESXO99gADhPS510j8C3o1
+    3GlXSRv+bJDSiOkzmV3NyGYpl717gN/D1glF0jQcWMQD1PqnKKC0iY/IL/be2PqSVgzFo4
+    rPywqUBdA+9ORkehiI2XM1Po7rucpJ5+sdSJdqdEFCFUM6BcsAAACBAMGvn+EtzWi5bAQX
+    /5ipbryroim5LFQdEAIO5cW6ujiEE7xaVLgyj0EW8mPQVSmOB8zu0UFkjL6h17E41/iIBi
+    ssW/KCKZWiW07CJqAQA/Ocdq9fQbx2Oogn7o+KfUFLYSBgcZQAofNCdduHa6vpnIAtB/NS
+    +Vwap6tIeoYfIMsjAAAADWx1dnJlc0BsYXB0b3ABAgMEBQ==
+    -----END OPENSSH PRIVATE KEY-----
+    
+ssh_pwauth: false
+disable_root: false
+preserve_hostname: false
+manage_etc_hosts: false
+
+#chpasswd:
+#  list: |
+#    root:aamu02
+#  expire: False
+
+# containerd and runc without docker
+containerdrunc:
+  - &containerd_runc |
+    curl -L https://github.com/containerd/containerd/releases/download/v1.4.1/containerd-1.4.1-linux-amd64.tar.gz | tar zxf - -C /usr/local/
+    curl -L https://github.com/opencontainers/runc/releases/download/v1.0.0-rc92/runc.amd64 -o /usr/local/sbin/runc
+    chmod 755 /usr/local/sbin/runc
+    curl -L https://raw.githubusercontent.com/containerd/cri/master/contrib/systemd-units/containerd.service -o /etc/systemd/system/containerd.service
+    systemctl enable containerd
+    echo "runtime-endpoint: unix:///run/containerd/containerd.sock" > /etc/crictl.yaml
+    echo '[Service]' >/etc/systemd/system/kubelet.service.d/0-containerd.conf
+    echo 'Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///run/containerd/containerd.sock"' >>/etc/systemd/system/kubelet.service.d/0-containerd.conf
+    echo 'br_netfilter' >/etc/modules-load.d/k8s.conf
+    echo 'ip_vs_rr' >>/etc/modules-load.d/k8s.conf
+    echo 'ip_vs_wrr' >>/etc/modules-load.d/k8s.conf
+    echo 'ip_vs_sh' >>/etc/modules-load.d/k8s.conf
+    echo 'nf_conntrack_ipv4' >>/etc/modules-load.d/k8s.conf
+    echo 'ip_vs' >>/etc/modules-load.d/k8s.conf
+    echo 'net.bridge.bridge-nf-call-ip6tables = 1' >/etc/sysctl.d/k8s.conf
+    echo 'net.bridge.bridge-nf-call-iptables = 1' >>/etc/sysctl.d/k8s.conf
+    echo 'net.ipv4.ip_forward=1' >>/etc/sysctl.d/k8s.conf
+    
+
+#ssh -i /etc/ssh/ssh_host_rsa_key debian@localhost
+
+
+# Set hostname according to your ip address
+sethostname:
+  - &set_hostname |
+    hostname -I | awk '{print $2}' | sed 's/\./-/g' | sed 's/^/ip-/' > /etc/hostname
+
+# Disadle default dhcp host
+disabledhcp:
+  - &disable_dhcp |
+    sed -i '/dhcp/s/^/#/' /etc/network/interfaces
+
+runcmd:
+ - [ sh, -c, *containerd_runc ]
+ - [ sh, -c, *set_hostname ]
+ - [ sh, -c, *disable_dhcp ]
+ - [ shutdown, -r, now ]
+
+
+## MASTER
+# kubeadm init --cri-socket /run/containerd/containerd.sock
+
+# mkdir -p $HOME/.kube
+# cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+# chown $(id -u):$(id -g) $HOME/.kube/config
+
+# kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+# -----------
+# kubeadm token create --print-join-command
+
+# kubeadm join --token <TOKEN> MASTER_IP:6443 --discovery-token-ca-cert-hash sha256:37092
+# --cri-socket /run/containerd/containerd.sock
+#--ignore-preflight-errors=all
+# -----------
+# kubectl get nodes
+
+# crictl ps
+# crictl --help
+# ---------------------------------
+# ---------------------------------
+## Posts
+#MASTER
+#kube-apiserver => 6443 TCP
+#etcd server API => 2379-2380 TCP
+#Kubelet API => 10250 TCP
+#kube-scheduler => 10251 TCP
+#kube-controller-manager => 10252 TCP
+#Kubelet API Read-only => 10255 TCP
+
+#WORKER
+#Kubelet API => 10250 TCP
+#Kubelet API Read-only => 10255 TCP
+#NodePort Services => 30000-32767 TCP
+
+
